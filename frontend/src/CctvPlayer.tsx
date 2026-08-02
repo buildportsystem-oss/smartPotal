@@ -44,15 +44,13 @@ const CctvPlayer: React.FC<CctvPlayerProps> = ({ streamName }) => {
         </div>
       )}
       
-      {/* 실제 영상이 나오는 비디오 태그 (유튜브 정책으로 웹 차단 방지용 순수 MP4 파일) */}
+      {/* 실제 영상이 나오는 비디오 태그 (가장 안정적인 NASA 지구 관측 라이브캠) */}
       {isDemoMode ? (
-        <video
-          src="https://cdn.pixabay.com/video/2021/08/17/85265-588726596_large.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          style={{ width: '100%', height: '100%', objectFit: 'cover', pointerEvents: 'none' }}
+        <iframe
+          src="https://www.youtube.com/embed/21X5lGlDOfg?autoplay=1&mute=1&controls=0&modestbranding=1"
+          style={{ width: '100%', height: '100%', border: 'none', pointerEvents: 'none' }}
+          allow="autoplay; encrypted-media"
+          title="NASA Earth Live CCTV"
         />
       ) : (
         <video
