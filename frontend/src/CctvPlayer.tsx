@@ -44,13 +44,13 @@ const CctvPlayer: React.FC<CctvPlayerProps> = ({ streamName }) => {
         </div>
       )}
       
-      {/* 실제 영상이 나오는 비디오 태그 (가장 안정적인 NASA 지구 관측 라이브캠) */}
+      {/* 실제 영상이 나오는 비디오 태그 (항상 현재 라이브 중인 '서울 한강 실시간 CCTV' 채널 자동 연결) */}
       {isDemoMode ? (
         <iframe
-          src="https://www.youtube.com/embed/21X5lGlDOfg?autoplay=1&mute=1&controls=0&modestbranding=1"
+          src="https://www.youtube.com/embed/live_stream?channel=UCwOAGU6UuF08QhYh-90p08A&autoplay=1&mute=1&controls=0&modestbranding=1"
           style={{ width: '100%', height: '100%', border: 'none', pointerEvents: 'none' }}
           allow="autoplay; encrypted-media"
-          title="NASA Earth Live CCTV"
+          title="Seoul Hangang Live CCTV"
         />
       ) : (
         <video
