@@ -10,6 +10,7 @@ const CctvPlayer: React.FC<CctvPlayerProps> = ({ streamName }) => {
   // HTML의 <video> 태그를 직접 조작하기 위해 useRef를 사용합니다.
   const videoRef = useRef<HTMLVideoElement>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isDemoMode, setIsDemoMode] = useState<boolean>(false);
 
   // 컴포넌트가 화면에 나타날 때(useEffect) WebRTC 연결을 시작합니다.
   useEffect(() => {
@@ -57,9 +58,10 @@ const CctvPlayer: React.FC<CctvPlayerProps> = ({ streamName }) => {
         await pc.setRemoteDescription(answer);
         
         setError(null);
+        setIsDemoMode(false);
       } catch (err: any) {
-        console.error('CCTV 연결 실패:', err);
-        setError('영상을 불러오지 못했습니다. (go2rtc 서버 상태를 확인하세요)');
+        console.warn('CCTV WebRTC 연결 실패, 데모 모드로 전환합니다:', err);
+        setIsDemoMode(true); // 에러 발생 시 데모 비디오로 전환
       }
     };
 
@@ -83,8 +85,8 @@ const CctvPlayer: React.FC<CctvPlayerProps> = ({ streamName }) => {
       border: '1px solid rgba(255,255,255,0.2)',
       position: 'relative'
     }}>
-      {/* 에러 발생 시 붉은색 메시지를 화면 한가운데에 띄워줍니다 */}
-      {error && (
+      {/* 에러 발생 시 붉은색 메시지를 화면 한가운데에 띄워줍니다 (이제 데모 모드가 켜지므로 잘 안 뜸) */}
+      {error && !isDemoMode && (
         <div style={{
           position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
           color: '#fca5a5', fontSize: '0.875rem'
@@ -94,14 +96,37 @@ const CctvPlayer: React.FC<CctvPlayerProps> = ({ streamName }) => {
       )}
       
       {/* 실제 영상이 나오는 비디오 태그 */}
-      <video
-        ref={videoRef}
-        autoPlay // 들어오자마자 자동 재생
-        playsInline // 모바일 화면에서 전체화면 대신 브라우저 영역 내에서 재생
-        muted // 대부분의 브라우저는 음소거 상태여야만 자동 재생을 허락합니다
-        controls // 재생/일시정지, 볼륨 조절 버튼 등을 표시
-        style={{ width: '100%', height: '100%', objectFit: 'cover' }} // 틀에 꽉 차게 비율 조정
-      />
+      {isDemoMode ? (
+        <video
+          src="https://cdn.pixabay.com/video/2019/04/18/22883-331502476_large.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        />
+      ) : (
+        <video
+          ref={videoRef}
+          autoPlay
+          playsInline
+          muted
+          controls
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        />
+      )}
+
+      {/* 데모 모드 알림 뱃지 */}
+      {isDemoMode && (
+        <div style={{
+          position: 'absolute', top: '0.5rem', right: '0.5rem',
+          background: 'rgba(239, 68, 68, 0.8)', color: 'white',
+          padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem',
+          fontWeight: 'bold', zIndex: 10
+        }}>
+          DEMO 영상
+        </div>
+      )}
     </div>
   );
 };

@@ -418,9 +418,9 @@ const Dashboard: React.FC = () => {
         </div>
       )}
 
-      {/* 8. 지도 모드 전환 버튼 */}
+      {/* 8. 지도 모드 전환 버튼 (우측 패널 바로 왼쪽) */}
       <div className="glass-panel" style={{
-        position: 'absolute', bottom: '2rem', right: '2rem',
+        position: 'absolute', top: '6.5rem', right: 'calc(2rem + 320px + 1rem)',
         zIndex: 1000, padding: '0.5rem', display: 'flex', gap: '0.5rem',
         borderRadius: '12px'
       }}>
