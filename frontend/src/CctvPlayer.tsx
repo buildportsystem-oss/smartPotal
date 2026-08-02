@@ -98,7 +98,7 @@ const CctvPlayer: React.FC<CctvPlayerProps> = ({ streamName }) => {
       {/* 실제 영상이 나오는 비디오 태그 (데모 모드 시 실시간 라이브캠 연결) */}
       {isDemoMode ? (
         <iframe
-          src="https://www.youtube.com/embed/live_stream?channel=UC-cGXwzS7XwlVn6zaPa3CDw&autoplay=1&mute=1&controls=0&modestbranding=1"
+          src="https://www.youtube.com/embed/DnqX7X6Pefg?autoplay=1&mute=1&controls=0&modestbranding=1&rel=0&loop=1&playlist=DnqX7X6Pefg"
           style={{ width: '100%', height: '100%', border: 'none', pointerEvents: 'none' }}
           allow="autoplay; encrypted-media"
           title="Real-time Public CCTV"
