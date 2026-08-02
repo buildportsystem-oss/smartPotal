@@ -47,7 +47,7 @@ const CctvPlayer: React.FC<CctvPlayerProps> = ({ streamName }) => {
       {/* 실제 영상이 나오는 비디오 태그 (유튜브 차단 방지 및 가장 안정적인 고정 교통 영상 MP4) */}
       {isDemoMode ? (
         <video
-          src="https://raw.githubusercontent.com/DeGirum/PySDKExamples/main/images/Traffic.mp4"
+          src="/cctv.mp4"
           autoPlay
           loop
           muted
