@@ -5,7 +5,7 @@ import { renderToString } from 'react-dom/server';
 import { MapContainer, TileLayer, Marker, Tooltip, Circle, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { Bell, Video, ArrowLeft, ShieldCheck, AlertTriangle, CloudSun, Info, MapPin, Clock, CloudRain, Waves, Megaphone, OctagonAlert, Cctv } from 'lucide-react';
+import { Bell, Video, ArrowLeft, ShieldCheck, AlertTriangle, CloudSun, Info, MapPin, Clock, CloudRain, Waves, Megaphone, OctagonAlert, Cctv, Map, Globe } from 'lucide-react';
 import CctvPlayer from './CctvPlayer';
 import { getSharedCCTVs, getSharedEvents, calculateDistance, type CCTVData, type EventData } from './mockData';
 
@@ -98,6 +98,9 @@ const Dashboard: React.FC = () => {
   // 지도 이동을 위한 중심 좌표 상태
   const [mapCenter, setMapCenter] = useState<[number, number] | null>(null);
 
+  // 지도 모드 (일반 / 위성)
+  const [mapType, setMapType] = useState<'normal' | 'satellite'>('normal');
+
   // 지도 위 디바이스 분류별 갯수 집계
   const typeCounts = useMemo(() => {
     const counts = events.reduce((acc, evt) => {
@@ -144,11 +147,18 @@ const Dashboard: React.FC = () => {
         zoomControl={false}
       >
         <MapController center={mapCenter} />
-        <TileLayer
-          attribution='&copy; OpenStreetMap contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          className="map-tiles"
-        />
+        {mapType === 'normal' ? (
+          <TileLayer
+            attribution='&copy; OpenStreetMap contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            className="map-tiles"
+          />
+        ) : (
+          <TileLayer
+            attribution='Tiles &copy; Esri'
+            url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+          />
+        )}
         
         {/* CCTV 30대 렌더링 (커스텀 아이콘) */}
         {cctvs.map(cctv => (
@@ -407,6 +417,38 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* 8. 지도 모드 전환 버튼 */}
+      <div className="glass-panel" style={{
+        position: 'absolute', bottom: '2rem', right: '2rem',
+        zIndex: 1000, padding: '0.5rem', display: 'flex', gap: '0.5rem',
+        borderRadius: '12px'
+      }}>
+        <button
+          onClick={() => setMapType('normal')}
+          style={{
+            display: 'flex', alignItems: 'center', gap: '0.4rem',
+            padding: '0.5rem 1rem', borderRadius: '8px', border: 'none',
+            background: mapType === 'normal' ? 'var(--primary-color)' : 'transparent',
+            color: mapType === 'normal' ? '#fff' : 'var(--text-secondary)',
+            cursor: 'pointer', transition: 'all 0.2s', fontWeight: 600, fontSize: '0.9rem'
+          }}
+        >
+          <Map size={16} /> 일반 지도
+        </button>
+        <button
+          onClick={() => setMapType('satellite')}
+          style={{
+            display: 'flex', alignItems: 'center', gap: '0.4rem',
+            padding: '0.5rem 1rem', borderRadius: '8px', border: 'none',
+            background: mapType === 'satellite' ? '#10b981' : 'transparent',
+            color: mapType === 'satellite' ? '#fff' : 'var(--text-secondary)',
+            cursor: 'pointer', transition: 'all 0.2s', fontWeight: 600, fontSize: '0.9rem'
+          }}
+        >
+          <Globe size={16} /> 위성 지도
+        </button>
+      </div>
 
     </div>
   );
