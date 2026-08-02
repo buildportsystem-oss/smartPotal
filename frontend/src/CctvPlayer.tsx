@@ -95,15 +95,13 @@ const CctvPlayer: React.FC<CctvPlayerProps> = ({ streamName }) => {
         </div>
       )}
       
-      {/* 실제 영상이 나오는 비디오 태그 */}
+      {/* 실제 영상이 나오는 비디오 태그 (데모 모드 시 실시간 라이브캠 연결) */}
       {isDemoMode ? (
-        <video
-          src="https://cdn.pixabay.com/video/2019/04/18/22883-331502476_large.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        <iframe
+          src="https://www.youtube.com/embed/live_stream?channel=UC-cGXwzS7XwlVn6zaPa3CDw&autoplay=1&mute=1&controls=0&modestbranding=1"
+          style={{ width: '100%', height: '100%', border: 'none', pointerEvents: 'none' }}
+          allow="autoplay; encrypted-media"
+          title="Real-time Public CCTV"
         />
       ) : (
         <video
@@ -120,11 +118,11 @@ const CctvPlayer: React.FC<CctvPlayerProps> = ({ streamName }) => {
       {isDemoMode && (
         <div style={{
           position: 'absolute', top: '0.5rem', right: '0.5rem',
-          background: 'rgba(239, 68, 68, 0.8)', color: 'white',
+          background: 'rgba(59, 130, 246, 0.8)', color: 'white',
           padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem',
           fontWeight: 'bold', zIndex: 10
         }}>
-          DEMO 영상
+          🔴 LIVE (공개 라이브캠)
         </div>
       )}
     </div>
