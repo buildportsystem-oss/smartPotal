@@ -44,13 +44,15 @@ const CctvPlayer: React.FC<CctvPlayerProps> = ({ streamName }) => {
         </div>
       )}
       
-      {/* 실제 영상이 나오는 비디오 태그 (항상 현재 라이브 중인 '서울 한강 실시간 CCTV' 채널 자동 연결) */}
+      {/* 실제 영상이 나오는 비디오 태그 (유튜브 차단 방지 및 가장 안정적인 고정 교통 영상 MP4) */}
       {isDemoMode ? (
-        <iframe
-          src="https://www.youtube.com/embed/live_stream?channel=UCwOAGU6UuF08QhYh-90p08A&autoplay=1&mute=1&controls=0&modestbranding=1"
-          style={{ width: '100%', height: '100%', border: 'none', pointerEvents: 'none' }}
-          allow="autoplay; encrypted-media"
-          title="Seoul Hangang Live CCTV"
+        <video
+          src="https://raw.githubusercontent.com/DeGirum/PySDKExamples/main/images/Traffic.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          style={{ width: '100%', height: '100%', objectFit: 'cover', pointerEvents: 'none' }}
         />
       ) : (
         <video
