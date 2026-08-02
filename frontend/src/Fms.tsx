@@ -2,7 +2,7 @@
 import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, ServerCrash, Wrench, CheckCircle2, LayoutGrid, X, Cctv, CloudRain, Waves, Megaphone, OctagonAlert, AlertTriangle } from 'lucide-react';
-import { getSharedFacilities, type FacilityData } from './mockData';
+import { getSharedFacilities } from './mockData';
 
 // UI 컴포넌트 렌더링용 아이콘 헬퍼 (관제 화면 마커와 동일)
 const getTypeReactIcon = (type: string) => {
