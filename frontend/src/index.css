@@ -1,0 +1,368 @@
+/* frontend/src/index.css */
+/* 구글 폰트에서 세련된 폰트(Inter)를 불러옵니다 */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* 전체 테마에 사용될 색상과 투명도(글래스모피즘) 변수들을 정의합니다 */
+:root {
+  --primary-color: #3b82f6; /* 포인트 파란색 */
+  --primary-hover: #2563eb; /* 진한 파란색 */
+  --bg-dark: #07172f; /* 딥 네이비 블루 (전체 배경) */
+  --glass-bg: rgba(59, 130, 246, 0.08); /* 푸른빛이 도는 반투명 유리 배경 */
+  --glass-border: rgba(59, 130, 246, 0.2); /* 푸른빛 테두리 */
+  --text-primary: #f0f9ff; /* 매우 밝은 푸른빛 텍스트 */
+  --text-secondary: #93c5fd; /* 밝은 파스텔 블루 보조 텍스트 */
+}
+
+/* 기본 여백을 초기화하고 글씨체를 적용합니다 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 화면 전체(body) 배경에 은은한 빛(방사형 그라데이션)을 주어 고급스러움을 더합니다 */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center; /* 화면 중앙 정렬 */
+  align-items: center; /* 화면 중앙 정렬 */
+  background-image: 
+    radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.2) 0%, transparent 50%),
+    radial-gradient(circle at 85% 30%, rgba(37, 99, 235, 0.2) 0%, transparent 50%);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* 로그인 박스 컨테이너: 글래스모피즘(투명 유리) 효과 적용 */
+.login-container {
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem;
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px); /* 뒤 배경을 흐리게 만듦 */
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); /* 입체감을 위한 그림자 */
+  animation: fadeIn 0.8s ease-out forwards; /* 나타날 때 부드러운 애니메이션 */
+}
+
+/* 박스가 아래에서 위로 스르륵 나타나는 애니메이션 정의 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 로그인 창 제목 영역 */
+.login-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+/* 시스템 이름 제목: 그라데이션 색상을 입혀서 눈에 띄게 만듦 */
+.login-header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #93c5fd, #3b82f6); /* 라이트블루-블루 그라데이션 */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.login-header p {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+/* 입력폼 그룹 (아이디/비밀번호) */
+.form-group {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+/* 입력창 라벨 (글씨) */
+.form-group label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+  color: var(--text-secondary);
+  transition: color 0.3s ease; /* 클릭 시 부드럽게 색상 변경 */
+}
+
+/* 입력창을 클릭하면 라벨 색상이 파란색으로 변함 */
+.form-group:focus-within label {
+  color: var(--primary-color);
+}
+
+/* 입력 텍스트 박스 */
+.form-control {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+/* 텍스트 박스 클릭(포커스) 시 테두리가 빛나는 효과 */
+.form-control:focus {
+  border-color: var(--primary-color);
+  background: rgba(0, 0, 0, 0.4);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.form-control::placeholder {
+  color: rgba(148, 163, 184, 0.5);
+}
+
+/* 로그인 버튼: 부드러운 그라데이션과 그림자로 입체감 표현 */
+.login-btn {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease; /* 호버 시 스무스한 애니메이션 */
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+  margin-top: 1rem;
+}
+
+/* 마우스를 올렸을 때 살짝 떠오르는 마이크로 애니메이션 효과 */
+.login-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+}
+
+/* 클릭할 때 살짝 들어가는 느낌의 효과 */
+.login-btn:active {
+  transform: translateY(1px);
+}
+
+/* 아이디나 비밀번호를 안 쳤을 때 버튼 비활성화 시 반투명 처리 */
+.login-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* 에러 메시지: 빨간색 투명 박스 */
+.error-message {
+  background: rgba(239, 68, 68, 0.1);
+  color: #fca5a5;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  text-align: center;
+}
+
+/* 성공 메시지: 초록색 투명 박스 */
+.success-message {
+  background: rgba(34, 197, 94, 0.1);
+  color: #86efac;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  text-align: center;
+}
+
+/* ==================================================
+   GIS 대시보드 전용 스타일 
+   ================================================== */
+
+/* 지도 배경을 다크 톤에 맞추기 위해 맵 컨테이너 배경색 지정 */
+.leaflet-container {
+  background: var(--bg-dark);
+}
+
+/* 
+  일반적인 밝은 지도를 다크 테마(Dark Mode) 지도처럼 보이게 만드는 마법의 CSS 필터입니다. 
+  색상을 반전(invert)하고 파란빛(hue-rotate)을 돌려서 멋지게 만듭니다.
+*/
+.map-tiles {
+  filter: brightness(0.6) invert(1) contrast(3) hue-rotate(200deg) saturate(0.3) brightness(0.7);
+}
+
+/* 지도 위에 둥둥 떠있는 반투명 유리창 느낌의 패널 */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  color: var(--text-primary);
+}
+
+/* 상단 헤더의 로그아웃 버튼 */
+.logout-btn {
+  display: flex;
+  align-items: center;
+  background: rgba(255,255,255,0.1);
+  color: var(--text-primary);
+  border: 1px solid var(--glass-border);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  font-size: 0.9rem;
+}
+.logout-btn:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+/* 좌측 패널의 이벤트(알람) 목록 박스 디자인 */
+.event-card {
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.event-card:hover, .event-card.active {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.3);
+  transform: translateX(6px);
+}
+.event-card.active {
+  box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+}
+
+/* 알람의 위험도에 따라 카드 왼쪽 테두리 색상을 다르게 줍니다. */
+.event-card.critical {
+  border-left: 4px solid #ef4444; /* 위험: 빨강 */
+}
+.event-card.warning {
+  border-left: 4px solid #f59e0b; /* 경고: 주황 */
+}
+.event-card.info {
+  border-left: 4px solid #3b82f6; /* 정보: 파랑 */
+}
+
+.event-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+.event-time {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+.event-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+
+/* 'CCTV 확인' 버튼 뱃지 디자인 */
+.event-cctv-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.75rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: 6px;
+  background: rgba(59, 130, 246, 0.15);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  color: #93c5fd;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* 시스템 선택 포털 카드 스타일 */
+.system-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.system-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(59, 130, 246, 0.4);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(59, 130, 246, 0.15);
+}
+.system-card .icon-wrapper {
+  display: inline-flex;
+  padding: 1.5rem;
+  border-radius: 50%;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+}
+.system-card:hover .icon-wrapper {
+  transform: scale(1.1);
+}
+.system-card h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+.system-card p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ==================================================
+   지도 마커 및 스크롤바 커스텀 스타일
+   ================================================== */
+
+/* CCTV 마커: 회파란색 계열로 필터 적용 */
+.cctv-marker {
+  filter: hue-rotate(180deg) saturate(0.5) brightness(1.2);
+}
+
+/* 이벤트 마커: 붉은색 경고 계열로 필터 적용 */
+.event-marker {
+  filter: hue-rotate(140deg) saturate(3) brightness(0.9);
+}
+
+/* 이벤트 리스트 스크롤바 디자인 */
+.scroll-container::-webkit-scrollbar {
+  width: 6px;
+}
+.scroll-container::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+  border-radius: 10px;
+}
+.scroll-container::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+}
+.scroll-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.3);
+}
+
+/* 커스텀 Div 아이콘의 기본 배경(흰색 사각형) 제거 */
+.custom-div-icon {
+  background: transparent;
+  border: none;
+}

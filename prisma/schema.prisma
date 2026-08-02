@@ -1,0 +1,106 @@
+// 이 파일은 Prisma 스키마 파일로, 데이터베이스의 구조(테이블)를 정의합니다.
+// 작성 후 `npx prisma db push` 또는 `npx prisma migrate dev`를 통해 데이터베이스에 적용할 수 있습니다.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------------------------------------------------------
+// 1. User 테이블: 관리자 및 사용자 로그인 정보
+// ---------------------------------------------------------
+model User {
+  id        String   @id @default(uuid())
+  loginId   String   @unique // 이메일 대신 로그인에 사용할 일반 아이디
+  password  String   // bcrypt 등으로 암호화된 비밀번호 저장
+  role      String   @default("USER") // 예: ADMIN, USER
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ---------------------------------------------------------
+// 2. Facility 테이블: 시설 정보 (지자체/폐기물/학교)
+// ---------------------------------------------------------
+model Facility {
+  id          String   @id @default(uuid())
+  name        String   // 시설 이름 (예: 서울시청, A폐기물처리장, B초등학교)
+  type        String   // 시설 종류 (LOCAL_GOV, WASTE, SCHOOL)
+  address     String?  // 주소
+  description String?  // 상세 설명
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // 1:N 관계 - 한 시설에 여러 자산, CCTV가 존재할 수 있음
+  assets      Asset[]
+  cctvs       Cctv[]
+}
+
+// ---------------------------------------------------------
+// 3. Asset 테이블: FMS 자산/장비 정보
+// ---------------------------------------------------------
+model Asset {
+  id             String   @id @default(uuid())
+  facilityId     String   // 소속된 시설 ID
+  name           String   // 자산 이름 (예: 1층 에어컨, 펌프 1호기)
+  bimObjectId    String?  // 3D BIM Object 매핑용 ID
+  status         String   @default("NORMAL") // 상태 (NORMAL, MAINTENANCE, BROKEN)
+  installationDate DateTime?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  facility       Facility @relation(fields: [facilityId], references: [id])
+  logs           MaintenanceLog[] // 자산의 유지보수 이력
+}
+
+// ---------------------------------------------------------
+// 4. MaintenanceLog 테이블: 유지보수 및 수리 이력
+// ---------------------------------------------------------
+model MaintenanceLog {
+  id          String   @id @default(uuid())
+  assetId     String   // 대상 자산 ID
+  title       String   // 점검 제목
+  description String   // 점검 내용
+  performedBy String   // 점검자
+  date        DateTime @default(now()) // 점검 일자
+
+  asset       Asset    @relation(fields: [assetId], references: [id])
+}
+
+// ---------------------------------------------------------
+// 5. Cctv 테이블: CCTV 정보 및 go2rtc 연동 정보
+// ---------------------------------------------------------
+model Cctv {
+  id         String   @id @default(uuid())
+  facilityId String   // 소속된 시설 ID
+  name       String   // CCTV 이름 또는 위치
+  streamId   String   // go2rtc WebRTC 스트림 ID (예: cctv_front)
+  url        String?  // 원본 RTSP 주소 등 (필요 시)
+  isActive   Boolean  @default(true) // 활성화 여부
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  facility   Facility @relation(fields: [facilityId], references: [id])
+}
+
+// ---------------------------------------------------------
+// 6. CapAlert 테이블: 지자체 재난 전용 OASIS CAP 1.2 알림
+// ---------------------------------------------------------
+model CapAlert {
+  id          String   @id @default(uuid())
+  identifier  String   // CAP 고유 식별자
+  sender      String   // 송신자
+  sent        DateTime // 송신 일시
+  status      String   // 상태 (Actual, Exercise, System, Test, Draft)
+  msgType     String   // 메시지 종류 (Alert, Update, Cancel, Ack, Error)
+  scope       String   // 범위 (Public, Restricted, Private)
+  event       String   // 재난/이벤트 명칭 (예: 지진 발생)
+  urgency     String   // 긴급성
+  severity    String   // 심각도
+  certainty   String   // 확실성
+  description String?  // 상세 설명
+  createdAt   DateTime @default(now())
+}

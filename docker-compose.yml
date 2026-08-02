@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  # 데이터베이스: PostgreSQL (PostGIS 확장 포함)
+  postgres:
+    image: postgis/postgis:15-3.3
+    container_name: b2g-postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: securepassword123
+      POSTGRES_DB: b2g_core
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  # 미디어 서버: WebRTC 영상 스트리밍을 위한 go2rtc
+  go2rtc:
+    image: alexxit/go2rtc
+    container_name: b2g-go2rtc
+    # 윈도우(Docker Desktop) 환경에서는 network_mode: host 대신 포트를 직접 뚫어주어야 합니다.
+    ports:
+      - "1984:1984"       # API 및 WebRTC 통신 포트
+      - "8554:8554"       # RTSP 수신 포트
+      - "8555:8555/tcp"   # WebRTC 영상 통신 포트 (TCP)
+      - "8555:8555/udp"   # WebRTC 영상 통신 포트 (UDP)
+    volumes:
+      - ./go2rtc.yaml:/config/go2rtc.yaml # 설정 파일 연동
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

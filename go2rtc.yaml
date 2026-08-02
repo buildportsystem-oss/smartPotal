@@ -1,0 +1,7 @@
+streams:
+  # 개발 및 테스트를 위해 ffmpeg를 활용한 가짜(Dummy) 비디오 패턴 스트림을 임시로 설정합니다.
+  cctv_test: "exec:ffmpeg -hide_banner -v error -re -f lavfi -i smptebars=size=640x360:rate=15 -c:v libx264 -preset ultrafast -tune zerolatency -f rtsp {output}"
+
+webrtc:
+  candidates:
+    - 127.0.0.1:8555
